@@ -9,174 +9,52 @@
         
         body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg-dark); color: white; margin: 0; padding-bottom: 100px; overflow-x: hidden; }
 
-        /* Welcome Splash Screen with your Poster */
+        /* Splash Screen with NEW Poster scaling */
         #splash {
             width: 100%; height: 100vh; 
-            background: url('poster.jpg') center top/cover no-repeat;
+            background: url('poster.jpg') no-repeat center center;
+            background-size: 100% 100%; /* Isse poster poori screen cover karega */
             display: flex; flex-direction: column; justify-content: flex-end; align-items: center;
             position: fixed; z-index: 1000; transition: transform 0.8s cubic-bezier(0.7, 0, 0.3, 1);
-            padding-bottom: 80px; box-sizing: border-box;
+            padding-bottom: 120px; box-sizing: border-box;
         }
         #splash.slide-up { transform: translateY(-110%); }
         
         .enter-mission-btn { 
-            padding: 18px 50px; background: var(--neon-purple); border: none; 
-            color: white; font-size: 1.2rem; font-weight: bold; border-radius: 50px; 
-            cursor: pointer; box-shadow: 0 0 25px var(--neon-purple);
-            text-transform: uppercase; letter-spacing: 2px;
+            padding: 16px 40px; background: var(--neon-purple); border: 2px solid white; 
+            color: white; font-size: 1.1rem; font-weight: bold; border-radius: 50px; 
+            cursor: pointer; box-shadow: 0 0 20px var(--neon-purple);
+            text-transform: uppercase; letter-spacing: 1px;
             animation: pulse 2s infinite;
         }
 
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
 
-        /* Main Menu Header */
-        .header { padding: 30px 20px; text-align: center; background: linear-gradient(to bottom, #1a0033, var(--bg-dark)); border-bottom: 1px solid var(--neon-purple); }
-        .header h1 { margin: 0; font-size: 2.5rem; color: var(--egg-yellow); text-shadow: 0 0 15px var(--egg-yellow); }
-        .header p { color: var(--neon-blue); margin-top: 5px; font-weight: bold; }
+        /* Header */
+        .header { padding: 25px 20px; text-align: center; background: linear-gradient(to bottom, #1a0033, var(--bg-dark)); border-bottom: 1px solid var(--neon-purple); }
+        .header h1 { margin: 0; font-size: 2.2rem; color: var(--egg-yellow); text-shadow: 0 0 10px var(--egg-yellow); }
+        .header p { color: var(--neon-blue); margin-top: 5px; font-weight: bold; font-size: 0.9rem; }
 
-        /* Table & History */
-        .info-bar { display: flex; justify-content: space-around; padding: 15px; background: #111; margin: 10px; border-radius: 15px; border: 1px solid #333; }
-        .table-box input { background: #222; border: 1px solid var(--neon-blue); color: white; width: 50px; padding: 5px; text-align: center; border-radius: 5px; font-size: 1rem; }
-        #history-text { font-size: 0.8rem; color: #888; text-align: center; margin-bottom: 10px; }
+        /* Info Bar */
+        .info-bar { display: flex; justify-content: space-around; align-items: center; padding: 12px; background: #111; margin: 10px; border-radius: 12px; border: 1px solid #333; }
+        .table-box input { background: #222; border: 1px solid var(--neon-blue); color: white; width: 45px; padding: 5px; text-align: center; border-radius: 5px; }
 
         /* Menu Grid */
-        .menu-grid { padding: 10px; display: grid; gap: 15px; }
+        .menu-grid { padding: 10px; display: grid; gap: 12px; }
         .card { 
             background: rgba(255,255,255,0.03); border: 1px solid rgba(188,19,254,0.2);
-            border-radius: 20px; padding: 15px; display: flex; align-items: center; gap: 15px;
-            backdrop-filter: blur(10px); transition: 0.3s;
+            border-radius: 18px; padding: 12px; display: flex; align-items: center; gap: 12px;
+            backdrop-filter: blur(8px);
         }
-        .card:active { background: rgba(188,19,254,0.1); }
-        .card-img { width: 65px; height: 65px; border-radius: 15px; border: 2px solid var(--egg-yellow); object-fit: cover; }
+        .card-icon { font-size: 2rem; background: #1a1a1a; width: 55px; height: 55px; border-radius: 12px; display: flex; align-items: center; justify-content: center; border: 1.5px solid var(--egg-yellow); }
         .card-info { flex: 1; }
-        .card-name { font-weight: bold; font-size: 1.1rem; color: #fff; display: block; }
-        .card-price { color: var(--egg-yellow); font-size: 1rem; }
+        .card-name { font-weight: bold; font-size: 1rem; color: #fff; display: block; }
+        .card-price { color: var(--egg-yellow); font-size: 0.95rem; font-weight: bold; }
 
         /* Qty Controls */
-        .qty-ctrl { display: flex; align-items: center; gap: 10px; background: #000; padding: 6px 12px; border-radius: 12px; border: 1px solid #444; }
-        .q-btn { background: var(--neon-purple); border: none; color: white; width: 28px; height: 28px; border-radius: 8px; font-weight: bold; font-size: 1.2rem; cursor: pointer; }
-        .q-num { min-width: 15px; text-align: center; font-weight: bold; }
+        .qty-ctrl { display: flex; align-items: center; gap: 8px; background: #000; padding: 5px 10px; border-radius: 10px; border: 1px solid #444; }
+        .q-btn { background: var(--neon-purple); border: none; color: white; width: 26px; height: 26px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+        .q-num { min-width: 15px; text-align: center; font-weight: bold; font-size: 0.9rem; }
 
         /* Footer */
-        .footer { position: fixed; bottom: 0; width: 100%; background: rgba(0,0,0,0.95); padding: 15px 25px; 
-                   display: flex; justify-content: space-between; align-items: center; border-top: 2px solid var(--neon-purple); box-sizing: border-box; z-index: 500; }
-        .total-box { line-height: 1; }
-        .total-box small { color: #888; font-size: 0.8rem; }
-        .total-val { display: block; font-size: 1.5rem; font-weight: bold; color: var(--egg-yellow); }
-        
-        .wa-order-btn { background: #25D366; color: white; border: none; padding: 14px 25px; border-radius: 15px; font-weight: bold; font-size: 1rem; cursor: pointer; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); }
-    </style>
-</head>
-<body>
-
-<div id="splash">
-    <button class="enter-mission-btn" onclick="openMenu()">Launch Menu</button>
-</div>
-
-<div class="header">
-    <h1>EGG PLANET</h1>
-    <p>🚀 Mission: Best Taste in the Galaxy</p>
-</div>
-
-<div class="info-bar">
-    <div class="table-box">
-        Table: <input type="number" id="tbl" placeholder="00">
-    </div>
-    <div style="color:var(--neon-blue); font-size: 0.9rem;">Amul Butter Only 🧈</div>
-</div>
-
-<div id="history-text"></div>
-
-<div class="menu-grid" id="menu-items"></div>
-
-<div class="footer">
-    <div class="total-box">
-        <small>Fuel Cost</small>
-        <span class="total-val">₹<span id="gTotal">0</span></span>
-    </div>
-    <button class="wa-order-btn" onclick="sendOrder()">Send to Merchant</button>
-</div>
-
-<script>
-    const waPhone = "919893201182";
-    // Food Items List
-    const menuData = [
-        { n: "Plain Omlete", p: 50, img: "🍳" }, { n: "Bread Omlete", p: 60, img: "🥪" },
-        { n: "French Omlete", p: 70, img: "🥖" }, { n: "Kali Mirch Omlete", p: 80, img: "🧂" },
-        { n: "Cheese Omlete", p: 90, img: "🧀" }, { n: "Double Cheese Omlete", p: 100, img: "🧀" },
-        { n: "Desi Egg Omlete", p: 70, img: "🥚" }, { n: "Desi Egg Bhurji", p: 80, img: "🥘" },
-        { n: "2 Egg Bhurji", p: 70, img: "🥘" }, { n: "4 Egg Bhurji", p: 120, img: "🥘" },
-        { n: "Egg Maggi", p: 50, img: "🍜" }, { n: "Chicken Maggi", p: 100, img: "🍗" },
-        { n: "Omlete Burger", p: 50, img: "🍔" }, { n: "Egg Pakora (pc)", p: 20, img: "🧆" },
-        { n: "Boiled Egg", p: 10, img: "🥚" }
-    ];
-
-    let cart = {};
-
-    // Load Menu
-    const container = document.getElementById('menu-items');
-    menuData.forEach(item => {
-        const div = document.createElement('div');
-        div.className = 'card';
-        div.innerHTML = `
-            <div style="font-size: 2.5rem; background: #222; width: 65px; height: 65px; border-radius: 15px; display: flex; align-items: center; justify-content: center; border: 2px solid var(--egg-yellow);">${item.img}</div>
-            <div class="card-info">
-                <span class="card-name">${item.n}</span>
-                <span class="card-price">₹${item.p}</span>
-            </div>
-            <div class="qty-ctrl">
-                <button class="q-btn" onclick="upd('${item.n}', -1, ${item.p})">-</button>
-                <span class="q-num" id="q-${item.n.replace(/\s+/g,'')}">0</span>
-                <button class="q-btn" onclick="upd('${item.n}', 1, ${item.p})">+</button>
-            </div>
-        `;
-        container.appendChild(div);
-    });
-
-    function upd(name, delta, price) {
-        if(!cart[name]) cart[name] = {q: 0, p: price};
-        cart[name].q += delta;
-        if(cart[name].q < 0) cart[name].q = 0;
-        document.getElementById(`q-${name.replace(/\s+/g,'')}`).innerText = cart[name].q;
-        
-        let total = 0;
-        for(let k in cart) total += cart[k].q * cart[k].p;
-        document.getElementById('gTotal').innerText = total;
-    }
-
-    function openMenu() { document.getElementById('splash').classList.add('slide-up'); }
-
-    function sendOrder() {
-        const table = document.getElementById('tbl').value;
-        if(!table) return alert("Space Station! Please enter Table No.");
-        
-        let msg = `*🛸 EGG PLANET ORDER*%0A*Table Number:* ${table}%0A---%0A`;
-        let count = 0;
-        let summary = [];
-
-        for(let key in cart) {
-            if(cart[key].q > 0) {
-                msg += `• ${key} x ${cart[key].q}%0A`;
-                summary.push(`${key}(${cart[key].q})`);
-                count++;
-            }
-        }
-        
-        if(count === 0) return alert("Select some items first!");
-        
-        msg += `---%0A*Total Bill: ₹${document.getElementById('gTotal').innerText}*`;
-        localStorage.setItem('last_mission', summary.join(', '));
-        window.open(`https://wa.me/${waPhone}?text=${msg}`, '_blank');
-    }
-
-    // Auto Table Detect & History
-    window.onload = () => {
-        const urlParams = new URLSearchParams(window.location.search);
-        if(urlParams.has('table')) document.getElementById('tbl').value = urlParams.get('table');
-        
-        const last = localStorage.getItem('last_mission');
-        if(last) document.getElementById('history-text').innerHTML = "Last Mission: " + last;
-    }
-</script>
-</body>
-</html>
+        .footer { position: fixed; bottom: 0; width: 100%; background: rgba
