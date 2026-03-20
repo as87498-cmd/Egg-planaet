@@ -2,143 +2,144 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Egg Planet - Space Mission</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Egg Planet - Space Menu</title>
     <style>
-        :root { --neon-purple: #bc13fe; --neon-blue: #0ff; --egg-yellow: #ffcc00; --bg-dark: #050505; }
+        :root { --neon-purple: #bc13fe; --neon-blue: #0ff; --egg-yellow: #ffcc00; --bg-dark: #000000; }
         
-        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg-dark); color: white; margin: 0; padding-bottom: 100px; overflow-x: hidden; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background-color: var(--bg-dark); font-family: 'Segoe UI', sans-serif; color: white; overflow-x: hidden; }
 
-        /* Splash Screen with eggplanet.jpg */
-        #splash {
-            width: 100%; height: 100vh; 
-            /* Yahan humne naya file name 'eggplanet.jpg' daal diya hai */
-            background: url('eggplanet.jpg?v=3') no-repeat center center;
-            background-size: 100% 100%;
-            display: flex; flex-direction: column; justify-content: flex-end; align-items: center;
-            position: fixed; z-index: 1000; transition: transform 0.8s cubic-bezier(0.7, 0, 0.3, 1);
-            padding-bottom: 120px; box-sizing: border-box;
+        /* PHASE 1: FULL SCREEN POSTER (eggplanet.png) */
+        #poster-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            /* Extension yahan .png kar di hai */
+            background: url('eggplanet.png') no-repeat center center;
+            background-size: 100% 100%; /* Pure mobile screen par fit aayega */
+            z-index: 2000; display: flex; flex-direction: column;
+            justify-content: flex-end; align-items: center;
+            padding-bottom: 60px; box-sizing: border-box;
+            transition: transform 0.6s ease-in-out;
         }
-        #splash.slide-up { transform: translateY(-110%); }
-        
-        .enter-mission-btn { 
-            padding: 16px 40px; background: var(--neon-purple); border: 2px solid white; 
-            color: white; font-size: 1.1rem; font-weight: bold; border-radius: 50px; 
-            cursor: pointer; box-shadow: 0 0 20px var(--neon-purple);
-            text-transform: uppercase; letter-spacing: 1px;
-            animation: pulse 2s infinite;
+
+        .launch-btn {
+            background: var(--neon-purple); color: white; border: 2px solid white;
+            padding: 15px 40px; font-size: 1.2rem; font-weight: bold;
+            border-radius: 50px; cursor: pointer; text-transform: uppercase;
+            box-shadow: 0 0 20px var(--neon-purple); animation: pulse 1.5s infinite;
         }
 
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
 
-        .header { padding: 25px 20px; text-align: center; background: linear-gradient(to bottom, #1a0033, var(--bg-dark)); border-bottom: 1px solid var(--neon-purple); }
-        .header h1 { margin: 0; font-size: 2.2rem; color: var(--egg-yellow); text-shadow: 0 0 10px var(--egg-yellow); }
-        .header p { color: var(--neon-blue); margin-top: 5px; font-weight: bold; font-size: 0.9rem; }
-        .info-bar { display: flex; justify-content: space-around; align-items: center; padding: 12px; background: #111; margin: 10px; border-radius: 12px; border: 1px solid #333; }
-        .table-box input { background: #222; border: 1px solid var(--neon-blue); color: white; width: 45px; padding: 5px; text-align: center; border-radius: 5px; }
-        .menu-grid { padding: 10px; display: grid; gap: 12px; }
-        .card { background: rgba(255,255,255,0.03); border: 1px solid rgba(188,19,254,0.2); border-radius: 18px; padding: 12px; display: flex; align-items: center; gap: 12px; backdrop-filter: blur(8px); }
-        .card-icon { font-size: 2rem; background: #1a1a1a; width: 55px; height: 55px; border-radius: 12px; display: flex; align-items: center; justify-content: center; border: 1.5px solid var(--egg-yellow); }
-        .card-info { flex: 1; }
-        .card-name { font-weight: bold; font-size: 1rem; color: #fff; display: block; }
-        .card-price { color: var(--egg-yellow); font-size: 0.95rem; font-weight: bold; }
-        .qty-ctrl { display: flex; align-items: center; gap: 8px; background: #000; padding: 5px 10px; border-radius: 10px; border: 1px solid #444; }
-        .q-btn { background: var(--neon-purple); border: none; color: white; width: 26px; height: 26px; border-radius: 6px; font-weight: bold; cursor: pointer; }
-        .q-num { min-width: 15px; text-align: center; font-weight: bold; font-size: 0.9rem; }
-        .footer { position: fixed; bottom: 0; width: 100%; background: rgba(0,0,0,0.95); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-top: 2px solid var(--neon-purple); box-sizing: border-box; z-index: 500; }
-        .total-val { display: block; font-size: 1.3rem; font-weight: bold; color: var(--egg-yellow); }
-        .wa-order-btn { background: #25D366; color: white; border: none; padding: 12px 20px; border-radius: 12px; font-weight: bold; cursor: pointer; }
-        #history-text { font-size: 0.75rem; color: #666; text-align: center; padding: 0 10px 10px; }
+        /* PHASE 2: MENU */
+        #menu-screen { padding: 20px; padding-bottom: 120px; display: none; }
+        .header { text-align: center; margin-bottom: 20px; border-bottom: 2px solid var(--neon-purple); padding-bottom: 10px; }
+        .header h1 { color: var(--egg-yellow); margin: 0; font-size: 2.2rem; text-shadow: 0 0 10px var(--egg-yellow); }
+
+        .table-info { background: #111; padding: 15px; border-radius: 12px; display: flex; justify-content: center; gap: 10px; align-items: center; margin-bottom: 20px; border: 1px solid #333; }
+        .table-info input { width: 60px; background: #222; border: 1px solid var(--neon-blue); color: white; text-align: center; padding: 8px; border-radius: 8px; font-size: 1.1rem; }
+
+        .item-card { background: rgba(255,255,255,0.05); margin-bottom: 12px; padding: 15px; border-radius: 15px; display: flex; align-items: center; justify-content: space-between; border: 1px solid rgba(188,19,254,0.3); }
+        .item-details b { display: block; font-size: 1.1rem; color: #fff; margin-bottom: 3px; }
+        .item-details span { color: var(--egg-yellow); font-weight: bold; font-size: 1rem; }
+
+        .qty-controls { display: flex; align-items: center; gap: 12px; background: #000; padding: 5px 12px; border-radius: 10px; border: 1px solid #444; }
+        .qty-btn { background: var(--neon-purple); border: none; color: white; width: 32px; height: 32px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1.2rem; }
+
+        /* Footer Bar */
+        .footer { position: fixed; bottom: 0; width: 100%; background: #000; padding: 20px; display: flex; justify-content: space-between; align-items: center; border-top: 2px solid var(--neon-purple); box-sizing: border-box; z-index: 100; }
+        .total-price { font-size: 1.5rem; font-weight: bold; color: var(--egg-yellow); }
+        .order-btn { background: #25D366; color: white; border: none; padding: 14px 25px; border-radius: 12px; font-weight: bold; font-size: 1rem; cursor: pointer; }
+
     </style>
 </head>
 <body>
 
-<div id="splash">
-    <button class="enter-mission-btn" onclick="openMenu()">Launch Menu</button>
-</div>
-
-<div class="header">
-    <h1>EGG PLANET</h1>
-    <p>🚀 Mission: Best Taste in the Galaxy</p>
-</div>
-
-<div class="info-bar">
-    <div class="table-box">
-        Table: <input type="number" id="tbl" placeholder="00">
+    <div id="poster-screen">
+        <button class="launch-btn" onclick="showMenu()">Explore Menu</button>
     </div>
-    <div style="color:var(--neon-blue); font-size: 0.8rem;">Amul Butter Only 🧈</div>
-</div>
 
-<div id="history-text"></div>
-<div class="menu-grid" id="menu-items"></div>
+    <div id="menu-screen">
+        <div class="header">
+            <h1>EGG PLANET</h1>
+            <p style="color:var(--neon-blue); margin: 5px 0;">🚀 Taste Beyond Earth</p>
+        </div>
 
-<div class="footer">
-    <div>
-        <small style="color:#888">Total Bill</small><br>
-        <span class="total-val">₹<span id="gTotal">0</span></span>
+        <div class="table-info">
+            <span>Table No:</span>
+            <input type="number" id="table_no" placeholder="00">
+        </div>
+
+        <div id="menu-list"></div>
     </div>
-    <button class="wa-order-btn" onclick="sendOrder()">Send to Merchant</button>
-</div>
 
-<script>
-    const waPhone = "919893201182";
-    const menuData = [
-        { n: "Plain Omlete", p: 50, i: "🍳" }, { n: "Bread Omlete", p: 60, i: "🥪" },
-        { n: "French Omlete", p: 70, i: "🥖" }, { n: "Kali Mirch Omlete", p: 80, i: "🧂" },
-        { n: "Cheese Omlete", p: 90, i: "🧀" }, { n: "Double Cheese Omlete", p: 100, i: "🧀" },
-        { n: "Desi Egg Omlete", p: 70, i: "🥚" }, { n: "Desi Egg Bhurji", p: 80, i: "🥘" },
-        { n: "2 Egg Bhurji", p: 70, i: "🥘" }, { n: "4 Egg Bhurji", p: 120, i: "🥘" },
-        { n: "Egg Maggi", p: 50, i: "🍜" }, { n: "Chicken Maggi", p: 100, i: "🍗" },
-        { n: "Omlete Burger", p: 50, i: "🍔" }, { n: "Egg Pakora (pc)", p: 20, i: "🧆" },
-        { n: "Boiled Egg", p: 10, i: "🥚" }
-    ];
+    <div class="footer">
+        <div class="total-price">₹<span id="final-amt">0</span></div>
+        <button class="order-btn" onclick="sendWhatsApp()">Order on WhatsApp</button>
+    </div>
 
-    let cart = {};
-    const container = document.getElementById('menu-items');
-    menuData.forEach(item => {
-        const div = document.createElement('div');
-        div.className = 'card';
-        div.innerHTML = `<div class="card-icon">${item.i}</div><div class="card-info"><span class="card-name">${item.n}</span><span class="card-price">₹${item.p}</span></div><div class="qty-ctrl"><button class="q-btn" onclick="upd('${item.n}', -1, ${item.p})">-</button><span class="q-num" id="q-${item.n.replace(/\s+/g,'')}">0</span><button class="q-btn" onclick="upd('${item.n}', 1, ${item.p})">+</button></div>`;
-        container.appendChild(div);
-    });
+    <script>
+        const phone = "919893201182";
+        const items = [
+            { n: "Plain Omlete", p: 50 }, { n: "Bread Omlete", p: 60 }, { n: "French Omlete", p: 70 },
+            { n: "Kali Mirch Omlete", p: 80 }, { n: "Cheese Omlete", p: 90 }, { n: "Double Cheese Omlete", p: 100 },
+            { n: "Desi Egg Omlete", p: 70 }, { n: "Desi Egg Bhurji", p: 80 }, { n: "2 Egg Bhurji", p: 70 },
+            { n: "4 Egg Bhurji", p: 120 }, { n: "Egg Maggi", p: 50 }, { n: "Chicken Maggi", p: 100 },
+            { n: "Omlete Burger", p: 50 }, { n: "Egg Pakora (pc)", p: 20 }, { n: "Boiled Egg", p: 10 }
+        ];
 
-    function upd(name, delta, price) {
-        if(!cart[name]) cart[name] = {q: 0, p: price};
-        cart[name].q += delta;
-        if(cart[name].q < 0) cart[name].q = 0;
-        document.getElementById(`q-${name.replace(/\s+/g,'')}`).innerText = cart[name].q;
-        let total = 0;
-        for(let k in cart) total += cart[k].q * cart[k].p;
-        document.getElementById('gTotal').innerText = total;
-    }
+        let cart = {};
 
-    function openMenu() { document.getElementById('splash').classList.add('slide-up'); }
-
-    function sendOrder() {
-        const table = document.getElementById('tbl').value;
-        if(!table) return alert("Space Station! Please enter Table No.");
-        let msg = `*🛸 EGG PLANET ORDER*%0A*Table:* ${table}%0A---%0A`;
-        let count = 0;
-        let summary = [];
-        for(let key in cart) {
-            if(cart[key].q > 0) {
-                msg += `• ${key} x ${cart[key].q}%0A`;
-                summary.push(`${key}(${cart[key].q})`);
-                count++;
-            }
+        function showMenu() {
+            document.getElementById('poster-screen').style.transform = 'translateY(-110%)';
+            document.getElementById('menu-screen').style.display = 'block';
         }
-        if(count === 0) return alert("Select some items first!");
-        msg += `---%0A*Total: ₹${document.getElementById('gTotal').innerText}*`;
-        localStorage.setItem('egg_last', summary.join(', '));
-        window.open(`https://wa.me/${waPhone}?text=${msg}`, '_blank');
-    }
 
-    window.onload = () => {
-        const urlParams = new URLSearchParams(window.location.search);
-        if(urlParams.has('table')) document.getElementById('tbl').value = urlParams.get('table');
-        const last = localStorage.getItem('egg_last');
-        if(last) document.getElementById('history-text').innerHTML = "Last Mission: " + last;
-    }
-</script>
+        const listDiv = document.getElementById('menu-list');
+        items.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'item-card';
+            div.innerHTML = `
+                <div class="item-details">
+                    <b>${item.n}</b>
+                    <span>₹${item.p}</span>
+                </div>
+                <div class="qty-controls">
+                    <button class="qty-btn" onclick="changeQty('${item.n}', -1, ${item.p})">-</button>
+                    <span id="qty-${item.n.replace(/\s+/g,'')}" style="min-width: 20px; text-align: center;">0</span>
+                    <button class="qty-btn" onclick="changeQty('${item.n}', 1, ${item.p})">+</button>
+                </div>
+            `;
+            listDiv.appendChild(div);
+        });
+
+        function changeQty(name, val, price) {
+            if(!cart[name]) cart[name] = {q: 0, p: price};
+            cart[name].q += val;
+            if(cart[name].q < 0) cart[name].q = 0;
+            document.getElementById(`qty-${name.replace(/\s+/g,'')}`).innerText = cart[name].q;
+            
+            let total = 0;
+            for(let k in cart) total += cart[k].q * cart[k].p;
+            document.getElementById('final-amt').innerText = total;
+        }
+
+        function sendWhatsApp() {
+            const t = document.getElementById('table_no').value;
+            if(!t) return alert("Please enter Table Number!");
+
+            let msg = `*🛸 EGG PLANET ORDER*%0A*Table:* ${t}%0A---%0A`;
+            let empty = true;
+            for(let k in cart) {
+                if(cart[k].q > 0) {
+                    msg += `• ${k} x ${cart[k].q} = ₹${cart[k].q * cart[k].p}%0A`;
+                    empty = false;
+                }
+            }
+            if(empty) return alert("Select some items first!");
+
+            msg += `---%0A*Total: ₹${document.getElementById('final-amt').innerText}*`;
+            window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
+        }
+    </script>
 </body>
 </html>
