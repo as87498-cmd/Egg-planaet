@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Egg Planet - Running Bill</title>
+    <title>Egg Planet - Total Bill System</title>
     <style>
         :root { --neon-purple: #bc13fe; --neon-blue: #0ff; --egg-yellow: #ffcc00; --bg-dark: #000; }
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; background-color: var(--bg-dark); font-family: 'Segoe UI', sans-serif; color: white; overflow-x: hidden; }
@@ -11,23 +11,22 @@
         #poster-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: url('eggplanet.png') no-repeat center center; background-size: 100% 100%; z-index: 2000; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; padding-bottom: 60px; box-sizing: border-box; transition: transform 0.6s ease-in-out; }
         .launch-btn { background: var(--neon-purple); color: white; border: 2px solid white; padding: 15px 40px; font-size: 1.2rem; font-weight: bold; border-radius: 50px; cursor: pointer; box-shadow: 0 0 20px var(--neon-purple); }
 
-        #menu-screen { padding: 20px; padding-bottom: 150px; display: none; }
+        #menu-screen { padding: 20px; padding-bottom: 160px; display: none; }
         .header { text-align: center; border-bottom: 2px solid var(--neon-purple); padding-bottom: 10px; margin-bottom: 15px; }
-        .header h1 { color: var(--egg-yellow); margin: 0; font-size: 2.2rem; }
+        
+        .running-bill-box { background: #111; border: 1px solid var(--neon-blue); padding: 12px; border-radius: 12px; margin-bottom: 15px; }
+        .running-bill-box h4 { margin: 0 0 8px 0; color: var(--neon-blue); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; }
+        #bill-history { font-size: 0.9rem; line-height: 1.4; color: #eee; }
 
-        /* Running Bill Summary */
-        .running-bill-box { background: #111; border: 1px dashed var(--neon-blue); padding: 10px; border-radius: 10px; margin-bottom: 15px; font-size: 0.9rem; }
-        .running-bill-box h4 { margin: 0 0 5px 0; color: var(--neon-blue); }
+        .item-card { background: rgba(255,255,255,0.05); margin-bottom: 10px; padding: 15px; border-radius: 15px; display: flex; align-items: center; justify-content: space-between; border: 1px solid rgba(188,19,254,0.2); }
+        .qty-controls { display: flex; align-items: center; gap: 12px; background: #000; padding: 5px 10px; border-radius: 10px; border: 1px solid #444; }
+        .qty-btn { background: var(--neon-purple); border: none; color: white; width: 32px; height: 32px; border-radius: 8px; font-weight: bold; cursor: pointer; }
 
-        .item-card { background: rgba(255,255,255,0.05); margin-bottom: 10px; padding: 12px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; border: 1px solid rgba(188,19,254,0.2); }
-        .qty-controls { display: flex; align-items: center; gap: 10px; background: #000; padding: 5px; border-radius: 8px; border: 1px solid #333; }
-        .qty-btn { background: var(--neon-purple); border: none; color: white; width: 30px; height: 30px; border-radius: 5px; font-weight: bold; cursor: pointer; }
-
-        .footer { position: fixed; bottom: 0; width: 100%; background: #000; padding: 15px 20px; border-top: 2px solid var(--neon-purple); box-sizing: border-box; z-index: 100; }
-        .footer-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .total-price { font-size: 1.5rem; font-weight: bold; color: var(--egg-yellow); }
-        .order-btn { background: #25D366; color: white; border: none; padding: 12px 20px; border-radius: 10px; font-weight: bold; width: 100%; cursor: pointer; font-size: 1.1rem; }
-        .clear-btn { background: #444; color: #ccc; border: none; padding: 5px 10px; border-radius: 5px; font-size: 0.7rem; cursor: pointer; }
+        .footer { position: fixed; bottom: 0; width: 100%; background: #000; padding: 20px; border-top: 2px solid var(--neon-purple); box-sizing: border-box; z-index: 100; }
+        .footer-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .total-price { font-size: 1.6rem; font-weight: bold; color: var(--egg-yellow); }
+        .order-btn { background: #25D366; color: white; border: none; padding: 15px; border-radius: 12px; font-weight: bold; width: 100%; cursor: pointer; font-size: 1.1rem; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); }
+        .clear-btn { background: #ff3b3b; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -38,13 +37,13 @@
 
     <div id="menu-screen">
         <div class="header">
-            <h1>EGG PLANET</h1>
-            <div id="table-display" style="color:var(--neon-blue); font-weight:bold;">Table: --</div>
+            <h1 style="color:var(--egg-yellow); margin:0;">EGG PLANET</h1>
+            <div id="table-display" style="color:var(--neon-blue); font-weight:bold; margin-top:5px;">Table: --</div>
         </div>
 
-        <div class="running-bill-box" id="bill-box">
-            <h4>Current Bill History:</h4>
-            <div id="bill-history" style="color:#aaa;">No items ordered yet.</div>
+        <div class="running-bill-box">
+            <h4>📝 Current Order List:</h4>
+            <div id="bill-history">No items ordered yet.</div>
         </div>
 
         <div id="menu-list"></div>
@@ -53,9 +52,9 @@
     <div class="footer">
         <div class="footer-top">
             <div class="total-price">Total: ₹<span id="final-amt">0</span></div>
-            <button class="clear-btn" onclick="clearBill()">New Session</button>
+            <button class="clear-btn" onclick="clearBill()">RESET BILL</button>
         </div>
-        <button class="order-btn" onclick="sendWhatsApp()">🚀 Send Order</button>
+        <button class="order-btn" onclick="sendWhatsApp()">🚀 Update & Send Order</button>
     </div>
 
     <script>
@@ -68,8 +67,9 @@
             { n: "Omlete Burger", p: 50 }, { n: "Egg Pakora (pc)", p: 20 }, { n: "Boiled Egg", p: 10 }
         ];
 
-        let currentCart = {}; // Jo abhi select kiya
-        let savedOrders = JSON.parse(localStorage.getItem('savedOrders')) || []; // Jo pehle order kar chuke
+        let currentSelection = {}; 
+        // Pehle se ordered items ko handle karne ke liye Object use karenge (Combine karne ke liye)
+        let masterBill = JSON.parse(localStorage.getItem('masterBill')) || {}; 
 
         function showMenu() {
             document.getElementById('poster-screen').style.transform = 'translateY(-110%)';
@@ -85,7 +85,7 @@
                 <div><b>${item.n}</b><span>₹${item.p}</span></div>
                 <div class="qty-controls">
                     <button class="qty-btn" onclick="changeQty('${item.n}', -1, ${item.p})">-</button>
-                    <span id="qty-${item.n.replace(/\s+/g,'')}">0</span>
+                    <span id="qty-${item.n.replace(/\s+/g,'')}" style="font-weight:bold; min-width:20px; text-align:center;">0</span>
                     <button class="qty-btn" onclick="changeQty('${item.n}', 1, ${item.p})">+</button>
                 </div>
             `;
@@ -93,10 +93,10 @@
         });
 
         function changeQty(name, val, price) {
-            if(!currentCart[name]) currentCart[name] = {q: 0, p: price};
-            currentCart[name].q += val;
-            if(currentCart[name].q < 0) currentCart[name].q = 0;
-            document.getElementById(`qty-${name.replace(/\s+/g,'')}`).innerText = currentCart[name].q;
+            if(!currentSelection[name]) currentSelection[name] = {q: 0, p: price};
+            currentSelection[name].q += val;
+            if(currentSelection[name].q < 0) currentSelection[name].q = 0;
+            document.getElementById(`qty-${name.replace(/\s+/g,'')}`).innerText = currentSelection[name].q;
             updateUI();
         }
 
@@ -104,15 +104,18 @@
             let historyHTML = "";
             let totalAmt = 0;
 
-            // Purana bill calculate karein
-            savedOrders.forEach(order => {
-                historyHTML += `• ${order.n} x ${order.q}<br>`;
-                totalAmt += (order.q * order.p);
-            });
+            // 1. Pehle se jo order ho chuka (Master Bill)
+            for (let item in masterBill) {
+                historyHTML += `<div style="display:flex; justify-content:space-between;"><span>✅ ${item} x ${masterBill[item].q}</span> <span>₹${masterBill[item].q * masterBill[item].p}</span></div>`;
+                totalAmt += (masterBill[item].q * masterBill[item].p);
+            }
 
-            // Naya select kiya hua calculate karein
-            for(let k in currentCart) {
-                totalAmt += (currentCart[k].q * currentCart[k].p);
+            // 2. Jo abhi select kiya hai (Yellow color for new)
+            for (let item in currentSelection) {
+                if(currentSelection[item].q > 0) {
+                    historyHTML += `<div style="display:flex; justify-content:space-between; color:var(--egg-yellow);"><span>🆕 ${item} x ${currentSelection[item].q}</span> <span>₹${currentSelection[item].q * currentSelection[item].p}</span></div>`;
+                    totalAmt += (currentSelection[item].q * currentSelection[item].p);
+                }
             }
 
             document.getElementById('bill-history').innerHTML = historyHTML || "No items ordered yet.";
@@ -121,37 +124,44 @@
 
         function sendWhatsApp() {
             const urlParams = new URLSearchParams(window.location.search);
-            const table = urlParams.get('table') || "Unknown";
+            const table = urlParams.get('table') || "Direct";
             
-            let newOrderText = "";
             let hasNewItem = false;
 
-            for(let k in currentCart) {
-                if(currentCart[k].q > 0) {
-                    savedOrders.push({n: k, q: currentCart[k].q, p: currentCart[k].p});
-                    newOrderText += `• ${k} x ${currentCart[k].q}%0A`;
+            // Naye items ko Master Bill mein add (Merge) karna
+            for (let item in currentSelection) {
+                if(currentSelection[item].q > 0) {
+                    if(masterBill[item]) {
+                        masterBill[item].q += currentSelection[item].q;
+                    } else {
+                        masterBill[item] = { q: currentSelection[item].q, p: currentSelection[item].p };
+                    }
                     hasNewItem = true;
-                    // Reset qty in UI
-                    document.getElementById(`qty-${k.replace(/\s+/g,'')}`).innerText = 0;
+                    // Reset UI counter
+                    document.getElementById(`qty-${item.replace(/\s+/g,'')}`).innerText = 0;
                 }
             }
 
-            if(!hasNewItem) return alert("Please select a new item to order!");
+            if(!hasNewItem) return alert("Please select something new to add!");
 
-            localStorage.setItem('savedOrders', JSON.stringify(savedOrders));
+            // Save updated master bill
+            localStorage.setItem('masterBill', JSON.stringify(masterBill));
+
+            // WhatsApp Message taiyar karna (Full Bill)
+            let msg = `*🛸 EGG PLANET - UPDATED BILL*%0A*Table:* ${table}%0A---%0A*TOTAL ORDERED ITEMS:*%0A`;
+            for (let item in masterBill) {
+                msg += `• ${item} x ${masterBill[item].q} = ₹${masterBill[item].q * masterBill[item].p}%0A`;
+            }
+            msg += `---%0A*GRAND TOTAL: ₹${document.getElementById('final-amt').innerText}*`;
             
-            let fullMsg = `*🛸 EGG PLANET NEW ORDER*%0A*Table:* ${table}%0A---%0A*Items:*%0A${newOrderText}---%0A*Total Bill so far: ₹${document.getElementById('final-amt').innerText}*`;
-            
-            currentCart = {}; // Clear temporary selection
+            currentSelection = {}; 
             updateUI();
-            window.open(`https://wa.me/${phone}?text=${fullMsg}`, '_blank');
+            window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
         }
 
         function clearBill() {
-            if(confirm("Customer has paid? This will clear the bill.")) {
-                localStorage.removeItem('savedOrders');
-                savedOrders = [];
-                currentCart = {};
+            if(confirm("Customer leaving? This will clear all items and total.")) {
+                localStorage.removeItem('masterBill');
                 location.reload();
             }
         }
