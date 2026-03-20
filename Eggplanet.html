@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Egg Planet - Order Now</title>
+    <style>
+        :root { --primary: #ffcc00; --dark: #121212; --card: #1e1e1e; --white: #ffffff; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--dark); color: var(--white); margin: 0; padding-bottom: 100px; }
+        
+        /* Header Poster Style */
+        .poster { background: linear-gradient(to bottom, rgba(0,0,0,0.2), var(--dark)), url('https://images.unsplash.com/photo-1513442542250-854d436a73f2?q=80&w=500&auto=format&fit=crop'); 
+                   height: 200px; background-size: cover; background-position: center; display: flex; flex-direction: column; 
+                   justify-content: center; align-items: center; text-align: center; border-bottom: 4px solid var(--primary); }
+        .poster h1 { margin: 0; font-size: 2.5rem; text-shadow: 2px 2px 10px rgba(0,0,0,0.8); color: var(--primary); }
+        .poster p { margin: 5px 0 0; font-weight: bold; background: rgba(0,0,0,0.5); padding: 2px 10px; border-radius: 5px; }
+
+        /* Order Info Section */
+        .order-info { padding: 15px; display: flex; gap: 10px; align-items: center; background: #252525; margin: 10px; border-radius: 10px; }
+        .table-input { background: #333; border: 1px solid var(--primary); color: white; padding: 10px; border-radius: 5px; width: 80px; text-align: center; font-size: 1rem; }
+
+        #historyBox { background: #1a1a1a; margin: 0 10px 10px; padding: 10px; border-radius: 8px; font-size: 0.85rem; border: 1px dashed #444; color: #aaa; display: none; }
+
+        /* Menu List */
+        .menu-list { padding: 0 10px; }
+        .item { background: var(--card); margin-bottom: 10px; padding: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; }
+        .item:active { transform: scale(0.98); }
+        .details b { display: block; font-size: 1.1rem; margin-bottom: 4px; }
+        .details span { color: var(--primary); font-weight: bold; }
+
+        /* Quantity Controls */
+        .qty-controls { display: flex; align-items: center; gap: 12px; background: #333; padding: 5px 10px; border-radius: 20px; }
+        .btn { background: var(--primary); border: none; width: 28px; height: 28px; border-radius: 50%; font-weight: bold; cursor: pointer; font-size: 1.2rem; }
+        .count { min-width: 15px; text-align: center; font-weight: bold; }
+
+        /* Floating Bottom Bar */
+        .footer-bar { position: fixed; bottom: 0; width: 100%; background: #000; border-top: 2px solid var(--primary); 
+                       padding: 15px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; }
+        .total-section { line-height: 1.2; }
+        .total-section small { color: #888; }
+        .total-amt { display: block; font-size: 1.4rem; font-weight: bold; color: var(--primary); }
+        
+        .whatsapp-btn { background: #25D366; color: white; border: none; padding: 12px 20px; border-radius: 8px; 
+                        font-weight: bold; font-size: 1rem; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+    </style>
+</head>
+<body>
+
+<div class="poster">
+    <h1>EGG PLANET</h1>
+    <p>Egg Planet Special & More</p>
+</div>
+
+<div class="order-info">
+    <label>Table No:</label>
+    <input type="number" id="tableNum" class="table-input" placeholder="00" min="1">
+    <span style="font-size: 0.8rem; color: #888;">(Enter your table number)</span>
+</div>
+
+<div id="historyBox"></div>
+
+<div class="menu-list" id="menuItems"></div>
+
+<div class="footer-bar">
+    <div class="total-section">
+        <small>Grand Total</small>
+        <span class="total-amt">₹<span id="grandTotal">0</span></span>
+    </div>
+    <button class="whatsapp-btn" onclick="placeOrder()">
+        Send Order →
+    </button>
+</div>
+
+<script>
+    const wpNumber = "919893201182";
+    const menu = [
+        { n: "Plain Omlete", p: 50 }, { n: "Bread Omlete", p: 60 }, { n: "French Omlete", p: 70 },
+        { n: "Kali Mirch Omlete", p: 80 }, { n: "Cheese Omlete", p: 90 }, { n: "Double Cheese Omlete", p: 100 },
+        { n: "Desi Egg Omlete", p: 70 }, { n: "Desi Egg Bhurji", p: 80 }, { n: "2 Egg Bhurji", p: 70 },
+        { n: "4 Egg Bhurji", p: 120 }, { n: "Egg Maggi", p: 50 }, { n: "Chicken Maggi", p: 100 },
+        { n: "Omlete Burger", p: 50 }, { n: "Egg Pakora (pc)", p: 20 }, { n: "Boiled Egg", p: 10 }
+    ];
+
+    let cart = {};
+
+    const container = document.getElementById('menuItems');
+    menu.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'item';
+        div.innerHTML = `
+            <div class="details">
+                <b>${item.n}</b>
+                <span>₹${item.p}</span>
+            </div>
+            <div class="qty-controls">
+                <button class="btn" onclick="changeQty('${item.n}', -1, ${item.p})">-</button>
+                <span class="count" id="q-${item.n.replace(/\s+/g, '')}">0</span>
+                <button class="btn" onclick="changeQty('${item.n}', 1, ${item.p})">+</button>
+            </div>
+        `;
+        container.appendChild(div);
+    });
+
+    function changeQty(name, delta, price) {
+        if (!cart[name]) cart[name] = { qty: 0, p: price };
+        cart[name].qty += delta;
+        if (cart[name].qty < 0) cart[name].qty = 0;
+        
+        document.getElementById(`q-${name.replace(/\s+/g, '')}`).innerText = cart[name].qty;
+        updateTotal();
+    }
+
+    function updateTotal() {
+        let total = 0;
+        for (let key in cart) { total += cart[key].qty * cart[key].p; }
+        document.getElementById('grandTotal').innerText = total;
+    }
+
+    function placeOrder() {
+        const table = document.getElementById('tableNum').value;
+        if (!table) { alert("Please enter Table Number!"); return; }
+
+        let text = `*ORDER - EGG PLANET*%0A*Table No:* ${table}%0A--------------------%0A`;
+        let items = [];
+        let hasItems = false;
+
+        for (let key in cart) {
+            if (cart[key].qty > 0) {
+                text += `• ${key} (${cart[key].qty}) - ₹${cart[key].qty * cart[key].p}%0A`;
+                items.push(`${key}(${cart[key].qty})`);
+                hasItems = true;
+            }
+        }
+
+        if (!hasItems) { alert("Cart is empty!"); return; }
+
+        text += `--------------------%0A*Total: ₹${document.getElementById('grandTotal').innerText}*`;
+        
+        // Save History
+        localStorage.setItem('egg_history', items.join(', '));
+        
+        window.open(`https://wa.me/${wpNumber}?text=${text}`, '_blank');
+    }
+
+    window.onload = () => {
+        const h = localStorage.getItem('egg_history');
+        if (h) {
+            const box = document.getElementById('historyBox');
+            box.style.display = 'block';
+            box.innerHTML = `🕒 *Last Order:* ${h}`;
+        }
+    }
+</script>
+
+</body>
+</html>
