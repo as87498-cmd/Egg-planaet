@@ -3,53 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Egg Planet - Space Menu</title>
+    <title>Egg Planet - Running Bill</title>
     <style>
-        :root { --neon-purple: #bc13fe; --neon-blue: #0ff; --egg-yellow: #ffcc00; --bg-dark: #000000; }
-        
+        :root { --neon-purple: #bc13fe; --neon-blue: #0ff; --egg-yellow: #ffcc00; --bg-dark: #000; }
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; background-color: var(--bg-dark); font-family: 'Segoe UI', sans-serif; color: white; overflow-x: hidden; }
+        
+        #poster-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: url('eggplanet.png') no-repeat center center; background-size: 100% 100%; z-index: 2000; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; padding-bottom: 60px; box-sizing: border-box; transition: transform 0.6s ease-in-out; }
+        .launch-btn { background: var(--neon-purple); color: white; border: 2px solid white; padding: 15px 40px; font-size: 1.2rem; font-weight: bold; border-radius: 50px; cursor: pointer; box-shadow: 0 0 20px var(--neon-purple); }
 
-        /* PHASE 1: FULL SCREEN POSTER (eggplanet.png) */
-        #poster-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            /* Extension yahan .png kar di hai */
-            background: url('eggplanet.png') no-repeat center center;
-            background-size: 100% 100%; /* Pure mobile screen par fit aayega */
-            z-index: 2000; display: flex; flex-direction: column;
-            justify-content: flex-end; align-items: center;
-            padding-bottom: 60px; box-sizing: border-box;
-            transition: transform 0.6s ease-in-out;
-        }
+        #menu-screen { padding: 20px; padding-bottom: 150px; display: none; }
+        .header { text-align: center; border-bottom: 2px solid var(--neon-purple); padding-bottom: 10px; margin-bottom: 15px; }
+        .header h1 { color: var(--egg-yellow); margin: 0; font-size: 2.2rem; }
 
-        .launch-btn {
-            background: var(--neon-purple); color: white; border: 2px solid white;
-            padding: 15px 40px; font-size: 1.2rem; font-weight: bold;
-            border-radius: 50px; cursor: pointer; text-transform: uppercase;
-            box-shadow: 0 0 20px var(--neon-purple); animation: pulse 1.5s infinite;
-        }
+        /* Running Bill Summary */
+        .running-bill-box { background: #111; border: 1px dashed var(--neon-blue); padding: 10px; border-radius: 10px; margin-bottom: 15px; font-size: 0.9rem; }
+        .running-bill-box h4 { margin: 0 0 5px 0; color: var(--neon-blue); }
 
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        .item-card { background: rgba(255,255,255,0.05); margin-bottom: 10px; padding: 12px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; border: 1px solid rgba(188,19,254,0.2); }
+        .qty-controls { display: flex; align-items: center; gap: 10px; background: #000; padding: 5px; border-radius: 8px; border: 1px solid #333; }
+        .qty-btn { background: var(--neon-purple); border: none; color: white; width: 30px; height: 30px; border-radius: 5px; font-weight: bold; cursor: pointer; }
 
-        /* PHASE 2: MENU */
-        #menu-screen { padding: 20px; padding-bottom: 120px; display: none; }
-        .header { text-align: center; margin-bottom: 20px; border-bottom: 2px solid var(--neon-purple); padding-bottom: 10px; }
-        .header h1 { color: var(--egg-yellow); margin: 0; font-size: 2.2rem; text-shadow: 0 0 10px var(--egg-yellow); }
-
-        .table-info { background: #111; padding: 15px; border-radius: 12px; display: flex; justify-content: center; gap: 10px; align-items: center; margin-bottom: 20px; border: 1px solid #333; }
-        .table-info input { width: 60px; background: #222; border: 1px solid var(--neon-blue); color: white; text-align: center; padding: 8px; border-radius: 8px; font-size: 1.1rem; }
-
-        .item-card { background: rgba(255,255,255,0.05); margin-bottom: 12px; padding: 15px; border-radius: 15px; display: flex; align-items: center; justify-content: space-between; border: 1px solid rgba(188,19,254,0.3); }
-        .item-details b { display: block; font-size: 1.1rem; color: #fff; margin-bottom: 3px; }
-        .item-details span { color: var(--egg-yellow); font-weight: bold; font-size: 1rem; }
-
-        .qty-controls { display: flex; align-items: center; gap: 12px; background: #000; padding: 5px 12px; border-radius: 10px; border: 1px solid #444; }
-        .qty-btn { background: var(--neon-purple); border: none; color: white; width: 32px; height: 32px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1.2rem; }
-
-        /* Footer Bar */
-        .footer { position: fixed; bottom: 0; width: 100%; background: #000; padding: 20px; display: flex; justify-content: space-between; align-items: center; border-top: 2px solid var(--neon-purple); box-sizing: border-box; z-index: 100; }
+        .footer { position: fixed; bottom: 0; width: 100%; background: #000; padding: 15px 20px; border-top: 2px solid var(--neon-purple); box-sizing: border-box; z-index: 100; }
+        .footer-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
         .total-price { font-size: 1.5rem; font-weight: bold; color: var(--egg-yellow); }
-        .order-btn { background: #25D366; color: white; border: none; padding: 14px 25px; border-radius: 12px; font-weight: bold; font-size: 1rem; cursor: pointer; }
-
+        .order-btn { background: #25D366; color: white; border: none; padding: 12px 20px; border-radius: 10px; font-weight: bold; width: 100%; cursor: pointer; font-size: 1.1rem; }
+        .clear-btn { background: #444; color: #ccc; border: none; padding: 5px 10px; border-radius: 5px; font-size: 0.7rem; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -61,20 +39,23 @@
     <div id="menu-screen">
         <div class="header">
             <h1>EGG PLANET</h1>
-            <p style="color:var(--neon-blue); margin: 5px 0;">🚀 Taste Beyond Earth</p>
+            <div id="table-display" style="color:var(--neon-blue); font-weight:bold;">Table: --</div>
         </div>
 
-        <div class="table-info">
-            <span>Table No:</span>
-            <input type="number" id="table_no" placeholder="00">
+        <div class="running-bill-box" id="bill-box">
+            <h4>Current Bill History:</h4>
+            <div id="bill-history" style="color:#aaa;">No items ordered yet.</div>
         </div>
 
         <div id="menu-list"></div>
     </div>
 
     <div class="footer">
-        <div class="total-price">₹<span id="final-amt">0</span></div>
-        <button class="order-btn" onclick="sendWhatsApp()">Order on WhatsApp</button>
+        <div class="footer-top">
+            <div class="total-price">Total: ₹<span id="final-amt">0</span></div>
+            <button class="clear-btn" onclick="clearBill()">New Session</button>
+        </div>
+        <button class="order-btn" onclick="sendWhatsApp()">🚀 Send Order</button>
     </div>
 
     <script>
@@ -87,11 +68,13 @@
             { n: "Omlete Burger", p: 50 }, { n: "Egg Pakora (pc)", p: 20 }, { n: "Boiled Egg", p: 10 }
         ];
 
-        let cart = {};
+        let currentCart = {}; // Jo abhi select kiya
+        let savedOrders = JSON.parse(localStorage.getItem('savedOrders')) || []; // Jo pehle order kar chuke
 
         function showMenu() {
             document.getElementById('poster-screen').style.transform = 'translateY(-110%)';
             document.getElementById('menu-screen').style.display = 'block';
+            updateUI();
         }
 
         const listDiv = document.getElementById('menu-list');
@@ -99,13 +82,10 @@
             const div = document.createElement('div');
             div.className = 'item-card';
             div.innerHTML = `
-                <div class="item-details">
-                    <b>${item.n}</b>
-                    <span>₹${item.p}</span>
-                </div>
+                <div><b>${item.n}</b><span>₹${item.p}</span></div>
                 <div class="qty-controls">
                     <button class="qty-btn" onclick="changeQty('${item.n}', -1, ${item.p})">-</button>
-                    <span id="qty-${item.n.replace(/\s+/g,'')}" style="min-width: 20px; text-align: center;">0</span>
+                    <span id="qty-${item.n.replace(/\s+/g,'')}">0</span>
                     <button class="qty-btn" onclick="changeQty('${item.n}', 1, ${item.p})">+</button>
                 </div>
             `;
@@ -113,32 +93,74 @@
         });
 
         function changeQty(name, val, price) {
-            if(!cart[name]) cart[name] = {q: 0, p: price};
-            cart[name].q += val;
-            if(cart[name].q < 0) cart[name].q = 0;
-            document.getElementById(`qty-${name.replace(/\s+/g,'')}`).innerText = cart[name].q;
-            
-            let total = 0;
-            for(let k in cart) total += cart[k].q * cart[k].p;
-            document.getElementById('final-amt').innerText = total;
+            if(!currentCart[name]) currentCart[name] = {q: 0, p: price};
+            currentCart[name].q += val;
+            if(currentCart[name].q < 0) currentCart[name].q = 0;
+            document.getElementById(`qty-${name.replace(/\s+/g,'')}`).innerText = currentCart[name].q;
+            updateUI();
+        }
+
+        function updateUI() {
+            let historyHTML = "";
+            let totalAmt = 0;
+
+            // Purana bill calculate karein
+            savedOrders.forEach(order => {
+                historyHTML += `• ${order.n} x ${order.q}<br>`;
+                totalAmt += (order.q * order.p);
+            });
+
+            // Naya select kiya hua calculate karein
+            for(let k in currentCart) {
+                totalAmt += (currentCart[k].q * currentCart[k].p);
+            }
+
+            document.getElementById('bill-history').innerHTML = historyHTML || "No items ordered yet.";
+            document.getElementById('final-amt').innerText = totalAmt;
         }
 
         function sendWhatsApp() {
-            const t = document.getElementById('table_no').value;
-            if(!t) return alert("Please enter Table Number!");
+            const urlParams = new URLSearchParams(window.location.search);
+            const table = urlParams.get('table') || "Unknown";
+            
+            let newOrderText = "";
+            let hasNewItem = false;
 
-            let msg = `*🛸 EGG PLANET ORDER*%0A*Table:* ${t}%0A---%0A`;
-            let empty = true;
-            for(let k in cart) {
-                if(cart[k].q > 0) {
-                    msg += `• ${k} x ${cart[k].q} = ₹${cart[k].q * cart[k].p}%0A`;
-                    empty = false;
+            for(let k in currentCart) {
+                if(currentCart[k].q > 0) {
+                    savedOrders.push({n: k, q: currentCart[k].q, p: currentCart[k].p});
+                    newOrderText += `• ${k} x ${currentCart[k].q}%0A`;
+                    hasNewItem = true;
+                    // Reset qty in UI
+                    document.getElementById(`qty-${k.replace(/\s+/g,'')}`).innerText = 0;
                 }
             }
-            if(empty) return alert("Select some items first!");
 
-            msg += `---%0A*Total: ₹${document.getElementById('final-amt').innerText}*`;
-            window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
+            if(!hasNewItem) return alert("Please select a new item to order!");
+
+            localStorage.setItem('savedOrders', JSON.stringify(savedOrders));
+            
+            let fullMsg = `*🛸 EGG PLANET NEW ORDER*%0A*Table:* ${table}%0A---%0A*Items:*%0A${newOrderText}---%0A*Total Bill so far: ₹${document.getElementById('final-amt').innerText}*`;
+            
+            currentCart = {}; // Clear temporary selection
+            updateUI();
+            window.open(`https://wa.me/${phone}?text=${fullMsg}`, '_blank');
+        }
+
+        function clearBill() {
+            if(confirm("Customer has paid? This will clear the bill.")) {
+                localStorage.removeItem('savedOrders');
+                savedOrders = [];
+                currentCart = {};
+                location.reload();
+            }
+        }
+
+        window.onload = () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const table = urlParams.get('table');
+            if(table) document.getElementById('table-display').innerText = "Table: " + table;
+            updateUI();
         }
     </script>
 </body>
